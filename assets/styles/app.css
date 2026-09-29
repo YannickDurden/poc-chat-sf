@@ -1,0 +1,58 @@
+body {
+    font-family: system-ui, sans-serif;
+    max-width: 640px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.chat {
+    display: flex;
+    flex-direction: column;
+    gap: .75rem;
+}
+
+.messages {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    height: 400px;
+    overflow-y: auto;
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+.message {
+    max-width: 75%;
+    padding: .5rem .75rem;
+    border-radius: 10px;
+    background: #eee;
+}
+
+.message time {
+    display: block;
+    font-size: .75rem;
+    opacity: .6;
+    margin-top: .15rem;
+}
+
+.chat-role-visitor .message--visitor,
+.chat-role-admin .message--admin {
+    align-self: flex-end;
+    background: #cfe8ff;
+}
+
+.chat-role-visitor .message--admin,
+.chat-role-admin .message--visitor {
+    align-self: flex-start;
+}
+
+.chat-form {
+    display: flex;
+    gap: .5rem;
+}
+
+.chat-form input {
+    flex: 1;
+    padding: .5rem;
+}

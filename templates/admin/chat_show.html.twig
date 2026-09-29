@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Conversation #{{ conversation.id }}{% endblock %}
+
+{% block body %}
+    <p><a href="{{ path('admin_chat_list') }}">&larr; Retour aux conversations</a></p>
+    <h1>Conversation #{{ conversation.id }}</h1>
+    {{ include('chat/_room.html.twig', {
+        conversation: conversation,
+        messages: messages,
+        role: 'admin',
+        postUrl: path('admin_chat_message', { id: conversation.id }),
+    }) }}
+{% endblock %}

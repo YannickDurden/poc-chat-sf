@@ -1,0 +1,17 @@
+{# params: conversation, messages, role ('visitor' or 'admin'), postUrl #}
+<div class="chat chat-role-{{ role }}">
+    <div id="messages" class="messages">
+        {% for message in messages %}
+            {{ include('chat/_message.html.twig', { message: message }) }}
+        {% else %}
+            <p class="messages-empty">Aucun message pour l'instant.</p>
+        {% endfor %}
+    </div>
+
+    <twig:Turbo:Stream:From topics="chat_{{ conversation.id }}" private />
+
+    <form action="{{ postUrl }}" method="post" class="chat-form">
+        <input type="text" name="content" placeholder="Votre message…" autocomplete="off" required>
+        <button type="submit">Envoyer</button>
+    </form>
+</div>

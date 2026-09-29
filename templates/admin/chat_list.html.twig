@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Conversations{% endblock %}
+
+{% block body %}
+    <h1>Conversations</h1>
+    <ul class="conversation-list">
+        {% for conversation in conversations %}
+            <li>
+                <a href="{{ path('admin_chat_show', { id: conversation.id }) }}">
+                    Conversation #{{ conversation.id }} — {{ conversation.createdAt|date('d/m/Y H:i') }}
+                </a>
+            </li>
+        {% else %}
+            <li>Aucune conversation pour le moment.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

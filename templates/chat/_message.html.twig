@@ -1,0 +1,4 @@
+<div id="message_{{ message.id }}" class="message message--{{ message.author.value }}">
+    <p>{{ message.content }}</p>
+    <time>{{ message.createdAt|date('H:i') }}</time>
+</div>

@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Discuter avec un conseiller{% endblock %}
+
+{% block body %}
+    <h1>Discuter avec un conseiller</h1>
+    {{ include('chat/_room.html.twig', {
+        conversation: conversation,
+        messages: messages,
+        role: 'visitor',
+        postUrl: path('app_chat_message', { id: conversation.id }),
+    }) }}
+{% endblock %}
