@@ -64,4 +64,33 @@ class SecurityControllerTest extends WebTestCase
 
         self::assertResponseStatusCodeSame(403);
     }
+
+    public function testAnonymousHeaderShowsAppNameOnly(): void
+    {
+        $client = static::createClient();
+        $client->request('GET', '/login');
+
+        self::assertSelectorTextContains('header.site-header', 'POC Chat');
+        self::assertSelectorNotExists('header.site-header button');
+    }
+
+    public function testLogoutRejectsGet(): void
+    {
+        $client = static::createClient();
+        $user = static::getContainer()->get('security.user.provider.concrete.users_in_memory')->loadUserByIdentifier('user');
+        $client->loginUser($user);
+        $client->request('GET', '/logout');
+
+        self::assertResponseStatusCodeSame(405);
+    }
+
+    public function testLogoutRejectsInvalidCsrfToken(): void
+    {
+        $client = static::createClient();
+        $user = static::getContainer()->get('security.user.provider.concrete.users_in_memory')->loadUserByIdentifier('user');
+        $client->loginUser($user);
+        $client->request('POST', '/logout', ['_csrf_token' => 'invalid']);
+
+        self::assertResponseStatusCodeSame(403);
+    }
 }
