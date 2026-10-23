@@ -12,6 +12,11 @@ docker compose up --wait
 - Visiteur : https://localhost:8443/chat
 - Admin : https://localhost:8443/admin/chat
 
+Ces deux pages passent par la page de connexion `/login`. Comptes de démo :
+
+- `user` / `user` : `ROLE_USER`, accès à `/chat`
+- `admin` / `admin` : `ROLE_ADMIN`, accès à `/admin/chat` et à `/chat`
+
 Ports HTTP/HTTPS remappés sur 8090/8443 dans `.env` (80/443 déjà pris localement). Le schéma de base (Doctrine) n'est pas généré automatiquement — à créer manuellement.
 
 ## Architecture technique
@@ -39,15 +44,15 @@ flowchart LR
 
 ## Comment tester la démo
 
-1. Ouvrir `/chat` dans un onglet — vue visiteur, une conversation privée est créée automatiquement.
-2. Ouvrir `/admin/chat` dans un second onglet — liste des conversations, puis cliquer sur la conversation.
+1. Ouvrir `/chat` et se connecter avec `user` / `user` — vue visiteur, une conversation privée est créée automatiquement.
+2. Ouvrir `/admin/chat` dans un autre navigateur (ou une fenêtre privée) et se connecter avec `admin` / `admin` — liste des conversations, puis cliquer sur la conversation.
 3. Écrire un message d'un côté : il apparaît **instantanément** de l'autre, sans rechargement de page.
 
 ## Limites du POC (hors périmètre)
 
-- Aucune authentification côté admin (accès libre à `/admin/chat`).
 - Pas de limitation de débit (rate limiting) sur l'envoi de messages.
-- Pas de tests automatisés.
+- Seuls les tests de contrôle d'accès existent (`php bin/phpunit`).
+- Utilisateurs en mémoire dans `config/packages/security.yaml` : les mots de passe de démo doivent être changés avant tout déploiement réel.
 - Une conversation par session visiteur uniquement (pas de reprise multi-appareil).
 
 ## Pistes d'évolution

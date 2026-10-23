@@ -1,0 +1,67 @@
+<?php
+
+namespace App\Tests\Controller;
+
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+
+class SecurityControllerTest extends WebTestCase
+{
+    public function testAnonymousChatRedirectsToLogin(): void
+    {
+        $client = static::createClient();
+        $client->request('GET', '/chat');
+
+        self::assertResponseRedirects('/login');
+    }
+
+    public function testAnonymousAdminRedirectsToLogin(): void
+    {
+        $client = static::createClient();
+        $client->request('GET', '/admin/chat');
+
+        self::assertResponseRedirects('/login');
+    }
+
+    public function testLoginPageRendersForm(): void
+    {
+        $client = static::createClient();
+        $client->request('GET', '/login');
+
+        self::assertResponseIsSuccessful();
+        self::assertSelectorExists('input[name="_username"]');
+        self::assertSelectorExists('input[name="_password"]');
+        self::assertSelectorExists('input[name="_csrf_token"]');
+    }
+
+    public function testValidCredentialsRedirectToChat(): void
+    {
+        $client = static::createClient();
+        $client->request('GET', '/login');
+        $client->submitForm('Se connecter', ['_username' => 'user', '_password' => 'user']);
+
+        self::assertResponseRedirects('/chat');
+    }
+
+    public function testInvalidCredentialsShowError(): void
+    {
+        $client = static::createClient();
+        $client->request('GET', '/login');
+        $client->submitForm('Se connecter', ['_username' => 'user', '_password' => 'wrong']);
+
+        self::assertResponseRedirects('/login');
+        $client->followRedirect();
+        self::assertSelectorTextContains('.form-error', 'Identifiant ou mot de passe invalide.');
+        self::assertInputValueSame('_username', 'user');
+    }
+
+    public function testUserCannotAccessAdmin(): void
+    {
+        $client = static::createClient();
+        // The token user must match the provider's one (password hash included), or the firewall logs it out on refresh.
+        $user = static::getContainer()->get('security.user.provider.concrete.users_in_memory')->loadUserByIdentifier('user');
+        $client->loginUser($user);
+        $client->request('GET', '/admin/chat');
+
+        self::assertResponseStatusCodeSame(403);
+    }
+}

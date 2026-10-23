@@ -56,3 +56,25 @@ body {
     flex: 1;
     padding: .5rem;
 }
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: .75rem;
+}
+
+.login-form label {
+    display: block;
+    margin-bottom: .25rem;
+}
+
+.login-form input {
+    padding: .5rem;
+}
+
+.form-error {
+    padding: .5rem .75rem;
+    border: 1px solid currentColor;
+    border-radius: 8px;
+    color: #a40000;
+}
