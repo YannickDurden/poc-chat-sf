@@ -78,3 +78,20 @@ body {
     border-radius: 8px;
     color: #a40000;
 }
+
+.site-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.site-header div {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+}
+
+.site-header form {
+    margin: 0;
+}

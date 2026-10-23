@@ -19,9 +19,18 @@
         {% endif %}
     </head>
     <body>
-        {% if app.user %}
-            <p>{{ app.user.userIdentifier }} — <a href="{{ path('app_logout') }}">Se déconnecter</a></p>
-        {% endif %}
+        <header class="site-header">
+            <span>POC Chat</span>
+            {% if app.user %}
+                <div>
+                    {{ app.user.userIdentifier }}
+                    <form method="post" action="{{ path('app_logout') }}">
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('logout') }}">
+                        <button type="submit">Se déconnecter</button>
+                    </form>
+                </div>
+            {% endif %}
+        </header>
         {% block body %}{% endblock %}
     </body>
 </html>
