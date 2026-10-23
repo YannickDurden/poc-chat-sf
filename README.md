@@ -47,11 +47,12 @@ flowchart LR
 1. Ouvrir `/chat` et se connecter avec `user` / `user` — vue visiteur, une conversation privée est créée automatiquement.
 2. Ouvrir `/admin/chat` dans un autre navigateur (ou une fenêtre privée) et se connecter avec `admin` / `admin` — liste des conversations, puis cliquer sur la conversation.
 3. Écrire un message d'un côté : il apparaît **instantanément** de l'autre, sans rechargement de page.
+4. Cliquer sur « Se déconnecter » dans le header (qui affiche le nom de l'utilisateur connecté) : la session est fermée et on revient sur `/login`.
 
 ## Limites du POC (hors périmètre)
 
 - Pas de limitation de débit (rate limiting) sur l'envoi de messages.
-- Seuls les tests de contrôle d'accès existent (`php bin/phpunit`).
+- Seuls les tests de contrôle d'accès, du header et de la déconnexion existent (`php bin/phpunit`).
 - Utilisateurs en mémoire dans `config/packages/security.yaml` : les mots de passe de démo doivent être changés avant tout déploiement réel.
 - Une conversation par session visiteur uniquement (pas de reprise multi-appareil).
 
