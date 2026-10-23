@@ -50,7 +50,7 @@ class SecurityControllerTest extends WebTestCase
 
         self::assertResponseRedirects('/login');
         $client->followRedirect();
-        self::assertSelectorTextContains('p', 'Identifiant ou mot de passe invalide.');
+        self::assertSelectorTextContains('.form-error', 'Identifiant ou mot de passe invalide.');
         self::assertInputValueSame('_username', 'user');
     }
 

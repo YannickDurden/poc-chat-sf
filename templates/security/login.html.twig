@@ -6,18 +6,24 @@
     <h1>Connexion</h1>
 
     {% if error %}
-        <p>Identifiant ou mot de passe invalide.</p>
+        <p class="form-error" role="alert">Identifiant ou mot de passe invalide.</p>
     {% endif %}
 
-    <form method="post" action="{{ path('app_login') }}">
-        <label for="username">Identifiant</label>
-        <input type="text" id="username" name="_username" value="{{ last_username }}" autocomplete="username" required autofocus>
+    <form method="post" action="{{ path('app_login') }}" class="login-form">
+        <div>
+            <label for="username">Identifiant</label>
+            <input type="text" id="username" name="_username" value="{{ last_username }}" autocomplete="username" required autofocus>
+        </div>
 
-        <label for="password">Mot de passe</label>
-        <input type="password" id="password" name="_password" autocomplete="current-password" required>
+        <div>
+            <label for="password">Mot de passe</label>
+            <input type="password" id="password" name="_password" autocomplete="current-password" required>
+        </div>
 
         <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-        <button type="submit">Se connecter</button>
+        <div>
+            <button type="submit">Se connecter</button>
+        </div>
     </form>
 {% endblock %}
