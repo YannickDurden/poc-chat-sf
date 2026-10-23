@@ -64,6 +64,15 @@ class RegistrationControllerTest extends WebTestCase
         self::assertSame(0, $this->getEntityManager()->getRepository(User::class)->count());
     }
 
+    public function testShortPasswordShowsError(): void
+    {
+        $this->submitRegistration('alice', 'court', 'court', 'ROLE_USER');
+
+        self::assertResponseStatusCodeSame(422);
+        self::assertSelectorTextContains('form', 'Le mot de passe doit contenir au moins 8 caractères.');
+        self::assertSame(0, $this->getEntityManager()->getRepository(User::class)->count());
+    }
+
     public function testDuplicateUsernameShowsError(): void
     {
         $user = new User();

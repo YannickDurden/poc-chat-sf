@@ -32,7 +32,7 @@ class RegistrationFormType extends AbstractType
                 'options' => ['attr' => ['autocomplete' => 'new-password']],
                 'constraints' => [
                     new NotBlank(),
-                    new Length(min: 8, max: 4096),
+                    new Length(min: 8, max: 4096, minMessage: 'Le mot de passe doit contenir au moins {{ limit }} caractères.'),
                 ],
             ])
             ->add('role', EnumType::class, [
