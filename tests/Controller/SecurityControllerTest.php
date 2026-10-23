@@ -74,6 +74,21 @@ class SecurityControllerTest extends WebTestCase
         self::assertSelectorNotExists('header.site-header button');
     }
 
+    public function testCsrfFieldsLoadTheStatelessCsrfScript(): void
+    {
+        $client = static::createClient();
+        $client->request('GET', '/login');
+
+        // Stateless CSRF needs csrf_protection_controller.js, which is lazy-loaded through this attribute.
+        self::assertSelectorExists('.login-form input[name="_csrf_token"][data-controller="csrf-protection"]');
+
+        $user = static::getContainer()->get('security.user.provider.concrete.users_in_memory')->loadUserByIdentifier('user');
+        $client->loginUser($user);
+        $client->request('GET', '/register');
+
+        self::assertSelectorExists('header.site-header input[name="_csrf_token"][data-controller="csrf-protection"]');
+    }
+
     public function testLogoutRejectsGet(): void
     {
         $client = static::createClient();

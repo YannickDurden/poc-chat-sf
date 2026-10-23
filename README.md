@@ -17,7 +17,9 @@ Ces deux pages passent par la page de connexion `/login`. Comptes de démo :
 - `user` / `user` : `ROLE_USER`, accès à `/chat`
 - `admin` / `admin` : `ROLE_ADMIN`, accès à `/admin/chat` et à `/chat`
 
-Ports HTTP/HTTPS remappés sur 8090/8443 dans `.env` (80/443 déjà pris localement). Le schéma de base (Doctrine) n'est pas généré automatiquement — à créer manuellement.
+La page publique `/register` permet aussi de créer un compte avec le rôle « Utilisateur » ou « Administrateur », puis de se connecter sur `/login`.
+
+Ports HTTP/HTTPS remappés sur 8090/8443 dans `.env` (80/443 déjà pris localement). Le schéma de base (Doctrine) n'est pas généré automatiquement — à créer manuellement, table `app_user` (comptes créés via `/register`) comprise.
 
 ## Architecture technique
 
@@ -48,11 +50,13 @@ flowchart LR
 2. Ouvrir `/admin/chat` dans un autre navigateur (ou une fenêtre privée) et se connecter avec `admin` / `admin` — liste des conversations, puis cliquer sur la conversation.
 3. Écrire un message d'un côté : il apparaît **instantanément** de l'autre, sans rechargement de page.
 4. Cliquer sur « Se déconnecter » dans le header (qui affiche le nom de l'utilisateur connecté) : la session est fermée et on revient sur `/login`.
+5. Pour tester avec un autre compte : ouvrir `/register`, créer un compte « Utilisateur » ou « Administrateur », puis se connecter sur `/login` (la table `app_user` doit exister).
 
 ## Limites du POC (hors périmètre)
 
 - Pas de limitation de débit (rate limiting) sur l'envoi de messages.
-- Seuls les tests de contrôle d'accès, du header et de la déconnexion existent (`php bin/phpunit`).
+- Seuls les tests du contrôle d'accès, du header, de la déconnexion et de la création de compte existent (`php bin/phpunit`).
+- N'importe qui peut créer un compte depuis `/register`, administrateur compris : à fermer avant tout déploiement réel.
 - Utilisateurs en mémoire dans `config/packages/security.yaml` : les mots de passe de démo doivent être changés avant tout déploiement réel.
 - Une conversation par session visiteur uniquement (pas de reprise multi-appareil).
 
