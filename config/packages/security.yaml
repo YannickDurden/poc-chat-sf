@@ -10,6 +10,13 @@ security:
                 users:
                     user: { password: '$2y$13$zsk2dpJNA41JOlY.iSTrJeqiGSf4dr2780vXQNJliA1T5TwzkRspC', roles: ['ROLE_USER'] }
                     admin: { password: '$2y$13$syIFnX2n5PTrtpt9FeIYDOV13E.iWK/f6srv7ajK1SjRUksGUtbw.', roles: ['ROLE_ADMIN'] }
+        app_user_provider:
+            entity:
+                class: App\Entity\User
+                property: username
+        all_users:
+            chain:
+                providers: [users_in_memory, app_user_provider]
 
     role_hierarchy:
         ROLE_ADMIN: ROLE_USER
@@ -21,7 +28,7 @@ security:
             security: false
         main:
             lazy: true
-            provider: users_in_memory
+            provider: all_users
 
             # Activate different ways to authenticate:
             # https://symfony.com/doc/current/security.html#the-firewall
@@ -41,6 +48,7 @@ security:
     # Note: Only the *first* matching rule is applied
     access_control:
         - { path: ^/login, roles: PUBLIC_ACCESS }
+        - { path: ^/register, roles: PUBLIC_ACCESS }
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/chat, roles: ROLE_USER }
 

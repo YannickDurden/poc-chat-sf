@@ -5,6 +5,10 @@
 {% block body %}
     <h1>Connexion</h1>
 
+    {% for message in app.flashes('success') %}
+        <p class="form-success" role="status">{{ message }}</p>
+    {% endfor %}
+
     {% if error %}
         <p class="form-error" role="alert">Identifiant ou mot de passe invalide.</p>
     {% endif %}
@@ -26,4 +30,6 @@
             <button type="submit">Se connecter</button>
         </div>
     </form>
+
+    <p><a href="{{ path('app_register') }}">Créer un compte</a></p>
 {% endblock %}
